@@ -1,6 +1,6 @@
-# ðŸ“¦ VhiWEB Backend Developer Test Project
+# VhiWEB Backend Developer Test Project
 
-## ðŸ§¾ Project Overview
+## Project Overview
 
 Ini adalah implementasi dari tes backend developer untuk **VhiWEB**. Aplikasi ini dibangun dengan **Laravel 12** dan menggunakan arsitektur clean code.
 
@@ -13,7 +13,7 @@ Fitur utama:
 
 ---
 
-## ðŸ› ï¸ Tech Stack
+## Tech Stack
 
 - Laravel 12
 - Sanctum
@@ -25,7 +25,7 @@ Fitur utama:
 
 ---
 
-## ðŸ”„ API Features
+## API Features
 
 ### âœ… Authentication
 - `POST /register` â†’ Register user
@@ -62,7 +62,7 @@ response()->error('Message', 400);
 
 ---
 
-## ðŸ”— Database Relationships
+##  Database Relationships
 
 ### User â†’ Vendor (hasOne)
 - Karena user hanya bisa mendaftarkan **satu** vendor, maka relasinya adalah `hasOne`.
@@ -84,7 +84,7 @@ public function products() {
 
 ---
 
-## ðŸ” Keamanan
+## Keamanan
 
 - Semua route dilindungi oleh middleware `auth:sanctum`
 - Cek kepemilikan produk sebelum update/hapus
@@ -92,7 +92,7 @@ public function products() {
 
 ---
 
-## ðŸ” Search & Pagination
+## Search & Pagination
 
 - Pencarian produk berdasarkan `name` dan `description`:
   ```
@@ -105,7 +105,7 @@ public function products() {
 
 ---
 
-## ðŸš€ Cara Menjalankan Project
+##  Cara Menjalankan Project
 
 1. Clone project
 ```bash
@@ -136,7 +136,7 @@ php artisan serve
 
 ---
 
-## ðŸ“® Testing
+##  Testing
 
 Gunakan Postman atau REST client:
 1. Register user
@@ -149,7 +149,7 @@ Gunakan Postman atau REST client:
 
 ---
 
-## ðŸ“Ž Penutup
+##  Penutup
 
 Project ini dibangun untuk menjawab soal dengan pendekatan clean architecture:
 - Code rapi, scalable
