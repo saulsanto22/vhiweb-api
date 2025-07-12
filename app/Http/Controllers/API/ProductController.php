@@ -7,6 +7,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Services\ProductService;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\DB;
 
@@ -15,19 +16,19 @@ class ProductController extends Controller
 {
     public function __construct(protected ProductService $service) {}
 
-    public function index(): JsonResponse
+    public function index()
     {
         $products = $this->service->getUserProducts();
         return response()->success('List of products', ProductResource::collection($products));
     }
 
-    public function store(StoreProductRequest $request): JsonResponse
+    public function store(StoreProductRequest $request)
     {
         $product = $this->service->createProduct($request);
         return response()->success('Product created successfully', new ProductResource($product), 201);
     }
 
-    public function update(UpdateProductRequest $request, Product $product): JsonResponse
+    public function update(UpdateProductRequest $request, Product $product)
     {
         if ($product->vendor->user_id !== Auth::id()) {
             return response()->error('Unauthorized', 403);
@@ -37,7 +38,7 @@ class ProductController extends Controller
         return response()->success('Product updated', new ProductResource($product));
     }
 
-    public function destroy(Product $product): JsonResponse
+    public function destroy(Product $product)
     {
         if ($product->vendor->user_id !== Auth::id()) {
             return response()->error('Unauthorized', 403);

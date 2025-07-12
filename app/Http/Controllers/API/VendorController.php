@@ -8,13 +8,14 @@ use App\Http\Resources\VendorResource;
 use App\Models\Vendor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use App\Services\VendorService;
 
 class VendorController extends Controller
 {
     public function __construct(protected VendorService $service) {}
 
-    public function show(): JsonResponse
+    public function show()
     {
         $vendor = Auth::user()->vendor;
 
@@ -23,7 +24,7 @@ class VendorController extends Controller
             : response()->error('Vendor not found', 404);
     }
 
-    public function store(StoreVendorRequest $request): JsonResponse
+    public function store(StoreVendorRequest $request)
     {
         if (Auth::user()->vendor) {
             return response()->error('You already have a vendor.', 400);

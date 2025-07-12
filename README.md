@@ -27,16 +27,16 @@ Fitur utama:
 
 ## API Features
 
-### âœ… Authentication
+###  Authentication
 - `POST /register` â†’ Register user
 - `POST /login` â†’ Login dan dapatkan token
 - `POST /logout` â†’ Logout dan revoke token
 
-### ðŸ¢ Vendor
+###  Vendor
 - `GET /vendors` â†’ Ambil vendor milik user login
 - `POST /vendors` â†’ Daftarkan vendor baru (user hanya bisa punya 1)
 
-### ðŸ“¦ Product
+###  Product
 - `GET /products` â†’ List produk (pagination & search)
 - `POST /products` â†’ Tambah produk
 - `PUT /products/{id}` â†’ Update produk (cek pemilik)
@@ -44,15 +44,15 @@ Fitur utama:
 
 ---
 
-## ðŸ“Œ Clean Code Structure
+##  Clean Code Structure
 
-### ðŸ§  Service Layer
+###   Service Layer
 Semua logic disimpan di folder `app/Services`, agar controller tetap bersih dan mudah diuji.
 
-### âœ… FormRequest
+###  FormRequest
 Validasi tidak ditulis di controller, tapi dipisahkan di folder `Http/Requests`.
 
-### ðŸ“¦ Response Macro
+###  Response Macro
 Menggunakan helper custom:
 
 ```php
