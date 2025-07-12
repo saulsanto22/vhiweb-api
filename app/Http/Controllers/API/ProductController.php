@@ -19,7 +19,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = $this->service->getUserProducts();
-        return response()->success('List of products', ProductResource::collection($products));
+        return ProductResource::collection($products);
     }
 
     public function store(StoreProductRequest $request)
@@ -38,7 +38,7 @@ class ProductController extends Controller
         return response()->success('Product updated', new ProductResource($product));
     }
 
-    public function destroy(Product $product)
+    public function destroy(Product $product): JsonResponse
     {
         if ($product->vendor->user_id !== Auth::id()) {
             return response()->error('Unauthorized', 403);

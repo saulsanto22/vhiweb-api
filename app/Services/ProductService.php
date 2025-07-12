@@ -21,7 +21,7 @@ class ProductService
                   ->orWhere('description', 'like', "%{$search}%");
             });
         }
-
+       
         return $query->paginate(request('per_page', 5));
     }
 
