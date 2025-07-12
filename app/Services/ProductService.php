@@ -53,6 +53,10 @@ class ProductService
 
     public function deleteProduct(Product $product): void
     {
+       if (!$product) {
+            throw new ModelNotFoundException("Produk tidak ditemukan.");
+        }
+        
         DB::transaction(fn () => $product->delete(), 5);
     }
 }
