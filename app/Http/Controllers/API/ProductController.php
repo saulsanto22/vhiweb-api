@@ -44,7 +44,7 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, $id)
     {
         try {
-            $product = $this->productFindOrFail($id);
+            $product = $this->service->productFindOrFail($id);
 
             if (!$this->service->authorizeUser($product)) {
                 return response()->error('Unauthorized', 403);
