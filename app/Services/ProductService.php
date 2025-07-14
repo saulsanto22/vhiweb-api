@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+ use Illuminate\Database\Eloquent\ModelNotFoundException; 
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -47,7 +48,7 @@ class ProductService
     {
         return DB::transaction(function () use ($request, $product) {
             $product->update($request->validated());
-            return $product->fresh();
+            return $product;
         }, 5);
     }
 

@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+
 class AuthController extends Controller
 {
     public function __construct(protected AuthService $service) {}
@@ -29,5 +30,12 @@ class AuthController extends Controller
             'token' => $token,
             'user' => new UserResource($user),
         ]);
+    }
+
+    public function logout(){
+
+        $this->service->logOut();
+        
+        return response()->success('Logout Berhasil!');
     }
 }

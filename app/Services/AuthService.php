@@ -35,4 +35,12 @@ class AuthService
 
         return [$user, $tokenPlain];
     }
+
+    public function logOut(){
+        
+        $user = Auth::user();
+        $user->currentAccessToken()->delete();
+
+        return $user;
+    }
 }
