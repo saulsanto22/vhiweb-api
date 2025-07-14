@@ -1,20 +1,23 @@
 <?php
 
 namespace App\Http\Controllers\API;
-use App\Models\Product;
-use Illuminate\Http\Request;
+
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use Illuminate\Support\Facades\Auth;
-use App\Services\ProductService;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
+use App\Models\Product;
+use App\Services\ProductService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
 
 class ProductController extends Controller
 {
-    public function __construct(protected ProductService $service) {}
+    public function __construct(
+        protected ProductService $service
+    ) {}
 
     public function index()
     {
@@ -24,27 +27,52 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request)
     {
-        $product = $this->service->createProduct($request);
-        return response()->success('Product created successfully', new ProductResource($product), 201);
+        try {
+            $checkVendor = $this->service->checkVendor();
+
+            if (!$vendor) {
+                abort(404, 'You do not have a registered vendor yet.');
+            }
+
+            $product = $this->service->createProduct($request);
+            return response()->success('Product created successfully', new ProductResource($product), 201);
+        } catch (\Throwable $th) {
+            return response()->error('Terjadi kesalahan', 500, $e->getMessage());
+        }
     }
 
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request, $id)
     {
-        if ($product->vendor->user_id !== Auth::id()) {
-            return response()->error('Unauthorized', 403);
-        }
+        try {
+            $product = $this->productFindOrFail($id);
 
-        $product = $this->service->updateProduct($request, $product);
-        return response()->success('Product updated', new ProductResource($product));
+            if (!$this->service->authorizeUser($product)) {
+                return response()->error('Unauthorized', 403);
+            }
+
+            $updatedProduct = $this->service->updateProduct($request, $product);
+            return response()->success('Product updated', new ProductResource($updatedProduct));
+        } catch (ModelNotFoundException $e) {
+            return response()->error('Data tidak ditemukan', 404);
+        } catch (\Throwable $e) {
+            return response()->error('Terjadi kesalahan', 500, $e->getMessage());
+        }
     }
 
-    public function destroy(Product $product): JsonResponse
+    public function destroy($id)
     {
-        if ($product->vendor->user_id !== Auth::id()) {
-            return response()->error('Unauthorized', 403);
-        }
+        try {
+            $product = $this->service->productFindOrFail($id);
 
-        $this->service->deleteProduct($product);
-        return response()->success('Product deleted');
+            if (!$this->service->authorizeUser($product)) {
+                return response()->error('Unauthorized', 403);
+            }
+            $this->service->deleteProduct($product);
+            return response()->success('Product deleted');
+        } catch (ModelNotFoundException $e) {
+            return response()->error('Data tidak ditemukan', 404);
+        } catch (\Throwable $e) {
+            return response()->error('Terjadi kesalahan', 500, $e->getMessage());
+        }
     }
 }

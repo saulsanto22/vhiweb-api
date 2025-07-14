@@ -14,7 +14,7 @@ class AuthService
 {
     public function register(RegisterRequest $request): User
     {
-        return DB::transaction(fn () => User::create([
+        return DB::transaction(fn() => User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -36,8 +36,8 @@ class AuthService
         return [$user, $tokenPlain];
     }
 
-    public function logOut(){
-        
+    public function logOut()
+    {
         $user = Auth::user();
         $user->currentAccessToken()->delete();
 
